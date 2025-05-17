@@ -6,15 +6,15 @@ import java.util.Properties;
 public class Injector {
     private final Properties properties;
 
-    public Injector() {
+    public Injector(String propertiesFileName) {
         properties = new Properties();
-        try (var inputStream = getClass().getClassLoader().getResourceAsStream("dependencies.properties")) {
+        try (var inputStream = getClass().getClassLoader().getResourceAsStream(propertiesFileName)) {
             if (inputStream == null) {
-                throw new RuntimeException("Файл dependencies.properties не найден в resources!");
+                throw new RuntimeException("Файл " + propertiesFileName + " не найден в resources!");
             }
             properties.load(inputStream);
         } catch (Exception e) {
-            throw new RuntimeException("Ошибка при загрузке dependencies.properties", e);
+            throw new RuntimeException("Ошибка при загрузке " + propertiesFileName, e);
         }
     }
 
