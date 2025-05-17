@@ -3,9 +3,19 @@ package injector;
 import java.lang.reflect.Field;
 import java.util.Properties;
 
+/**
+ * Класс Injector реализует механизм внедрения зависимостей на основе аннотации {@link AutoInjectable}.
+ * Зависимости указываются в файлах properties, находящихся в resources.
+ */
 public class Injector {
     private final Properties properties;
 
+    /**
+     * Загружает зависимости из указанного properties-файла.
+     *
+     * @param propertiesFileName имя файла в ресурсах (например, "depsA.properties")
+     * @throws RuntimeException если файл не найден или возникла ошибка загрузки
+     */
     public Injector(String propertiesFileName) {
         properties = new Properties();
         try (var inputStream = getClass().getClassLoader().getResourceAsStream(propertiesFileName)) {
@@ -18,6 +28,13 @@ public class Injector {
         }
     }
 
+    /**
+     * Внедряет зависимости в поля объекта, аннотированные {@link AutoInjectable}.
+     *
+     * @param obj объект, в который нужно внедрить зависимости
+     * @return объект с внедренными зависимостями
+     * @throws RuntimeException при ошибке создания зависимостей
+     */
     public <T> T inject(T obj) {
         Class<?> cls = obj.getClass();
 
